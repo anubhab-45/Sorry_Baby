@@ -1,37 +1,72 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#fff3f6" />
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta name="theme-color" content="#fff3f6">
+
   <title>I'm Sorry, Fuchoo ❤️</title>
+
   <style>
     :root {
-      --bg-1: #fff7f9;
-      --bg-2: #ffe8ef;
-      --card: rgba(255, 255, 255, 0.82);
+      --bg-1: #fff8fa;
+      --bg-2: #ffe5ed;
+      --card: rgba(255, 255, 255, 0.86);
       --text: #472a34;
       --muted: #795865;
       --accent: #e94f7c;
       --accent-2: #ff8baa;
       --line: rgba(233, 79, 124, 0.18);
-      --shadow: 0 22px 70px rgba(126, 39, 68, 0.16);
+      --shadow: 0 24px 70px rgba(126, 39, 68, 0.17);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    html { scroll-behavior: smooth; }
-
+    html,
     body {
       margin: 0;
-      min-height: 100vh;
-      overflow-x: hidden;
-      font-family: "Noto Sans Bengali", "Hind Siliguri", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      width: 100%;
+      min-height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      min-height: 100svh;
+
+      font-family:
+        "Noto Sans Bengali",
+        "Hind Siliguri",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
       color: var(--text);
+
       background:
-        radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.95), transparent 28%),
-        radial-gradient(circle at 90% 20%, rgba(255, 209, 223, 0.9), transparent 25%),
-        linear-gradient(145deg, var(--bg-1), var(--bg-2));
+        radial-gradient(
+          circle at 10% 10%,
+          rgba(255, 255, 255, 0.95),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 18%,
+          rgba(255, 207, 221, 0.95),
+          transparent 28%
+        ),
+        linear-gradient(
+          145deg,
+          var(--bg-1),
+          var(--bg-2)
+        );
     }
 
     body::before {
@@ -39,10 +74,24 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      background-image: radial-gradient(rgba(233,79,124,.08) 1px, transparent 1px);
+
+      background-image:
+        radial-gradient(
+          rgba(233, 79, 124, 0.08) 1px,
+          transparent 1px
+        );
+
       background-size: 22px 22px;
-      mask-image: linear-gradient(to bottom, #000 0%, transparent 90%);
+
+      mask-image:
+        linear-gradient(
+          to bottom,
+          #000 0%,
+          transparent 92%
+        );
     }
+
+    /* Floating hearts */
 
     .hearts {
       position: fixed;
@@ -54,453 +103,1222 @@
 
     .heart {
       position: absolute;
-      bottom: -40px;
+      bottom: -45px;
       opacity: 0;
-      animation: floatUp linear forwards;
-      filter: drop-shadow(0 5px 8px rgba(233,79,124,.15));
+
+      animation:
+        floatUp linear forwards;
+
+      filter:
+        drop-shadow(
+          0 5px 8px rgba(233, 79, 124, 0.14)
+        );
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(0) rotate(0deg) scale(.7); opacity: 0; }
-      12% { opacity: .65; }
-      100% { transform: translateY(-115vh) rotate(18deg) scale(1.2); opacity: 0; }
+      0% {
+        transform:
+          translateY(0)
+          rotate(0deg)
+          scale(0.72);
+
+        opacity: 0;
+      }
+
+      12% {
+        opacity: 0.58;
+      }
+
+      100% {
+        transform:
+          translateY(-115vh)
+          rotate(20deg)
+          scale(1.2);
+
+        opacity: 0;
+      }
     }
 
-    .wrap {
+    /* Main app */
+
+    .app {
       position: relative;
       z-index: 2;
-      width: min(92%, 760px);
-      margin: 0 auto;
-      padding: 28px 0 80px;
-    }
 
-    .hero {
       min-height: 100svh;
+
       display: grid;
       place-items: center;
-      text-align: center;
+
+      padding: 22px 14px 80px;
     }
 
+    /* Each separate page */
+
+    .page {
+      position: absolute;
+
+      width: min(92%, 720px);
+      max-height: calc(100svh - 112px);
+
+      overflow-y: auto;
+      scrollbar-width: none;
+
+      opacity: 0;
+      visibility: hidden;
+
+      transform:
+        translateX(38px)
+        scale(0.97);
+
+      transition:
+        opacity 0.5s ease,
+        transform 0.5s ease,
+        visibility 0.5s;
+
+      pointer-events: none;
+    }
+
+    .page::-webkit-scrollbar {
+      display: none;
+    }
+
+    .page.active {
+      opacity: 1;
+      visibility: visible;
+
+      transform:
+        translateX(0)
+        scale(1);
+
+      pointer-events: auto;
+    }
+
+    .page.exit-left {
+      opacity: 0;
+
+      transform:
+        translateX(-38px)
+        scale(0.97);
+    }
+
+    /* Card design */
+
     .card {
-      width: 100%;
-      padding: clamp(24px, 5vw, 44px);
-      border: 1px solid rgba(255,255,255,.9);
-      border-radius: 30px;
-      background: var(--card);
-      backdrop-filter: blur(15px);
-      box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
+
+      width: 100%;
+
+      padding:
+        clamp(24px, 5vw, 44px);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.92);
+
+      border-radius: 30px;
+
+      background: var(--card);
+
+      backdrop-filter: blur(16px);
+
+      box-shadow: var(--shadow);
+
+      text-align: center;
     }
 
     .card::after {
       content: "";
+
       position: absolute;
+
       width: 170px;
       height: 170px;
-      right: -70px;
-      top: -70px;
+
+      right: -75px;
+      top: -75px;
+
       border-radius: 50%;
-      background: linear-gradient(135deg, rgba(255,255,255,.7), rgba(255,139,170,.22));
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.72),
+          rgba(255, 139, 170, 0.2)
+        );
+
+      pointer-events: none;
     }
 
     .tiny {
-      font-size: .88rem;
-      letter-spacing: .08em;
+      position: relative;
+      z-index: 1;
+
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+
       color: var(--accent);
       font-weight: 800;
     }
 
-    h1, h2, p { margin-top: 0; }
+    h1,
+    h2,
+    p {
+      margin-top: 0;
+    }
 
     h1 {
-      font-size: clamp(2.2rem, 8vw, 4.6rem);
-      line-height: 1.05;
-      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+
+      font-size:
+        clamp(2.25rem, 8vw, 4.5rem);
+
+      line-height: 1.08;
+      margin-bottom: 15px;
     }
 
     h2 {
-      font-size: clamp(1.7rem, 5vw, 2.5rem);
+      position: relative;
+      z-index: 1;
+
+      font-size:
+        clamp(1.72rem, 5vw, 2.55rem);
+
+      line-height: 1.24;
       margin-bottom: 16px;
     }
 
-    .lead {
-      font-size: clamp(1.02rem, 3.6vw, 1.26rem);
-      line-height: 1.85;
-      color: var(--muted);
-      max-width: 620px;
-      margin: 0 auto 24px;
-    }
+    /* Main heart */
 
     .pulse-heart {
       display: inline-grid;
       place-items: center;
+
       width: 88px;
       height: 88px;
-      margin: 10px 0 22px;
+
+      margin: 12px 0 22px;
+
       border-radius: 50%;
-      background: linear-gradient(145deg, #fff, #ffe4ec);
-      box-shadow: 0 12px 35px rgba(233,79,124,.2);
+
+      background:
+        linear-gradient(
+          145deg,
+          #ffffff,
+          #ffe4ec
+        );
+
+      box-shadow:
+        0 12px 35px rgba(233, 79, 124, 0.2);
+
       font-size: 2.5rem;
-      animation: pulse 1.5s infinite;
+
+      animation:
+        pulse 1.5s infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.08); }
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.09);
+      }
     }
 
-    .btn {
-      border: 0;
-      border-radius: 999px;
-      padding: 14px 22px;
-      font: inherit;
-      font-weight: 800;
-      cursor: pointer;
-      transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
+    .lead {
+      position: relative;
+      z-index: 1;
 
-    .btn:hover { transform: translateY(-2px); }
-    .btn:active { transform: translateY(0) scale(.98); }
+      font-size:
+        clamp(1.01rem, 3.5vw, 1.22rem);
 
-    .btn-primary {
-      color: white;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 12px 28px rgba(233,79,124,.28);
-    }
+      line-height: 1.86;
 
-    .btn-soft {
-      color: var(--accent);
-      background: white;
-      border: 1px solid var(--line);
-    }
+      color: var(--muted);
 
-    .section {
-      padding: 26px 0;
-    }
+      max-width: 620px;
 
-    .section .card {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: .8s ease;
-    }
-
-    .section .card.show {
-      opacity: 1;
-      transform: translateY(0);
+      margin:
+        0 auto 24px;
     }
 
     .message {
-      font-size: 1.05rem;
-      line-height: 1.95;
+      position: relative;
+      z-index: 1;
+
       color: var(--muted);
+
+      font-size: 1.04rem;
+      line-height: 1.95;
+
       text-align: left;
     }
 
-    .message strong { color: var(--text); }
+    .message strong {
+      color: var(--text);
+    }
 
     .quote {
-      margin: 24px 0 0;
-      padding: 18px 20px;
-      border-left: 4px solid var(--accent);
-      background: rgba(255,255,255,.65);
-      border-radius: 0 18px 18px 0;
+      margin: 22px 0 0;
+
+      padding: 17px 19px;
+
+      border-left:
+        4px solid var(--accent);
+
+      border-radius:
+        0 18px 18px 0;
+
+      background:
+        rgba(255, 255, 255, 0.68);
+
       color: var(--text);
+
       font-weight: 700;
       line-height: 1.8;
     }
 
+    /* Promise boxes */
+
     .promise-grid {
+      position: relative;
+      z-index: 1;
+
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
       gap: 12px;
-      margin-top: 20px;
+
+      margin: 20px 0 2px;
     }
 
     .promise {
-      padding: 18px 12px;
-      border-radius: 20px;
-      background: rgba(255,255,255,.72);
-      border: 1px solid var(--line);
-      text-align: center;
-      min-height: 125px;
+      min-height: 130px;
+
       display: grid;
       place-content: center;
+
       gap: 7px;
+
+      padding: 18px 12px;
+
+      border-radius: 20px;
+
+      border:
+        1px solid var(--line);
+
+      background:
+        rgba(255, 255, 255, 0.72);
+
       color: var(--muted);
+
       line-height: 1.5;
     }
 
-    .promise span { font-size: 1.8rem; }
-    .promise b { color: var(--text); }
-
-    .final {
-      min-height: 82svh;
-      display: grid;
-      place-items: center;
-      text-align: center;
+    .promise span {
+      font-size: 1.8rem;
     }
 
-    .actions {
+    .promise b {
+      color: var(--text);
+    }
+
+    /* Buttons */
+
+    .btn-row {
+      position: relative;
+      z-index: 1;
+
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
+      flex-wrap: wrap;
+
+      gap: 11px;
+
       margin-top: 24px;
     }
 
-    .reply {
-      margin-top: 20px;
-      min-height: 34px;
-      color: var(--accent);
+    .btn {
+      border: 0;
+
+      border-radius: 999px;
+
+      padding: 14px 22px;
+
+      font: inherit;
       font-weight: 800;
-      line-height: 1.7;
+
+      cursor: pointer;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 8px;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
     }
 
-    .signature {
-      margin-top: 26px;
-      color: var(--muted);
-      font-size: .95rem;
+    .btn:hover {
+      transform: translateY(-2px);
     }
 
-    .signature b { color: var(--text); }
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--accent),
+          var(--accent-2)
+        );
+
+      box-shadow:
+        0 12px 28px rgba(233, 79, 124, 0.29);
+    }
+
+    .btn-soft {
+      color: var(--accent);
+
+      background: #ffffff;
+
+      border:
+        1px solid var(--line);
+    }
+
+    /* Back button */
+
+    .back-btn {
+      position: fixed;
+
+      left: 16px;
+      bottom: 16px;
+
+      z-index: 30;
+
+      width: 48px;
+      height: 48px;
+
+      padding: 0;
+
+      border-radius: 50%;
+
+      border:
+        1px solid rgba(255, 255, 255, 0.92);
+
+      background:
+        rgba(255, 255, 255, 0.84);
+
+      box-shadow:
+        0 10px 25px rgba(126, 39, 68, 0.16);
+
+      color: var(--accent);
+
+      font-size: 1.15rem;
+
+      backdrop-filter: blur(10px);
+
+      display: none;
+    }
+
+    /* Music button */
 
     .music {
       position: fixed;
+
       right: 16px;
       bottom: 16px;
-      z-index: 20;
+
+      z-index: 30;
+
       width: 48px;
       height: 48px;
+
+      padding: 0;
+
       border-radius: 50%;
-      border: 1px solid rgba(255,255,255,.9);
-      background: rgba(255,255,255,.82);
-      box-shadow: 0 10px 25px rgba(126,39,68,.16);
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      font-size: 1.15rem;
+
+      border:
+        1px solid rgba(255, 255, 255, 0.92);
+
+      background:
+        rgba(255, 255, 255, 0.84);
+
+      box-shadow:
+        0 10px 25px rgba(126, 39, 68, 0.16);
+
+      color: var(--text);
+
+      font-size: 1.12rem;
+
       backdrop-filter: blur(10px);
     }
 
-    .progress {
+    /* Progress dots */
+
+    .progress-wrap {
       position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 50;
-      height: 4px;
-      width: 0;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+
+      left: 50%;
+      bottom: 24px;
+
+      z-index: 25;
+
+      transform: translateX(-50%);
+
+      display: flex;
+      gap: 7px;
     }
 
-    .footer-note {
-      text-align: center;
-      color: var(--muted);
-      opacity: .78;
-      font-size: .85rem;
-      padding-top: 16px;
+    .dot {
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(233, 79, 124, 0.22);
+
+      transition:
+        width 0.3s ease,
+        background 0.3s ease;
     }
+
+    .dot.active {
+      width: 24px;
+
+      border-radius: 999px;
+
+      background: var(--accent);
+    }
+
+    .reply {
+      position: relative;
+      z-index: 1;
+
+      min-height: 34px;
+
+      margin-top: 20px;
+
+      color: var(--accent);
+
+      font-weight: 800;
+      line-height: 1.75;
+    }
+
+    .signature {
+      position: relative;
+      z-index: 1;
+
+      margin-top: 24px;
+
+      color: var(--muted);
+
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .signature b {
+      color: var(--text);
+    }
+
+    /* Mobile responsive */
 
     @media (max-width: 620px) {
-      .wrap { width: min(93%, 720px); }
-      .card { border-radius: 24px; }
-      .promise-grid { grid-template-columns: 1fr; }
-      .promise { min-height: 0; grid-template-columns: auto 1fr; text-align: left; align-items: center; }
-      .promise span { grid-row: span 2; }
-      .actions { flex-direction: column; }
-      .btn { width: 100%; }
+      .app {
+        padding:
+          16px 10px 76px;
+      }
+
+      .page {
+        width:
+          min(94%, 720px);
+
+        max-height:
+          calc(100svh - 98px);
+      }
+
+      .card {
+        border-radius: 24px;
+
+        padding:
+          25px 21px;
+      }
+
+      .promise-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .promise {
+        min-height: 0;
+
+        grid-template-columns:
+          auto 1fr;
+
+        text-align: left;
+        align-items: center;
+      }
+
+      .promise span {
+        grid-row: span 2;
+      }
+
+      .btn-row {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .back-btn,
+      .music {
+        width: 45px;
+        height: 45px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
     }
   </style>
 </head>
+
 <body>
-  <div class="progress" id="progress"></div>
+
+  <!-- Floating hearts container -->
+
   <div class="hearts" id="hearts"></div>
 
+  <!--
+    গান যোগ করতে index.html-এর সঙ্গে
+    একই folder-এ গানটি রাখবে।
+
+    গানের নাম অবশ্যই হবে:
+    our-song.mp3
+  -->
+
   <audio id="song" loop preload="none">
-    <source src="our-song.mp3" type="audio/mpeg" />
+    <source
+      src="our-song.mp3"
+      type="audio/mpeg"
+    >
   </audio>
-  <button class="music" id="musicBtn" aria-label="Play or pause music" title="Music">♫</button>
 
-  <main class="wrap">
-    <section class="hero">
+  <main class="app">
+
+    <!-- Page 1 -->
+
+    <section
+      class="page active"
+      data-page="0"
+    >
       <div class="card">
-        <div class="tiny">For my favourite person</div>
-        <div class="pulse-heart">❤️</div>
-        <h1>I'm Sorry, Fuchoo</h1>
+
+        <div class="tiny">
+          For my favourite person
+        </div>
+
+        <div class="pulse-heart">
+          ❤️
+        </div>
+
+        <h1>
+          I'm Sorry, Fuchoo
+        </h1>
+
         <p class="lead">
-          আজ তোমার মন খারাপের কারণ আমি। তাই কোনো অজুহাত নয়—শুধু সত্যি করে আমার মনের কথাগুলো বলার জন্য এই ছোট্ট জায়গাটা বানালাম।
+          আজ তোমার মন খারাপের কারণ আমি।
+          কোনো অজুহাত দেব না—শুধু সত্যি করে
+          আমার মনের কথাগুলো তোমাকে বলতে চাই।
         </p>
-        <a class="btn btn-primary" href="#sorry">আমার কথাটা একটু শুনবে? ↓</a>
+
+        <div class="btn-row">
+
+          <button
+            class="btn btn-primary next-btn"
+          >
+            আমার কথাটা শোনো ফুচু ❤️
+          </button>
+
+        </div>
+
       </div>
     </section>
 
-    <section class="section" id="sorry">
-      <div class="card reveal">
-        <div class="tiny">No excuses</div>
-        <h2>ভুলটা আমারই ছিল</h2>
+    <!-- Page 2 -->
+
+    <section
+      class="page"
+      data-page="1"
+    >
+      <div class="card">
+
+        <div class="tiny">
+          No excuses
+        </div>
+
+        <h2>
+          ভুলটা আমারই ছিল
+        </h2>
+
         <div class="message">
+
           <p>
-            রিতা, আমি বুঝতে পেরেছি যে আমার কাজ বা কথায় তোমার মনে কষ্ট হয়েছে। আমি হয়তো তখন পুরোটা বুঝিনি, কিন্তু এখন বুঝছি—<strong>তোমার কষ্টটা সত্যি, আর সেটাকে ছোট করে দেখার কোনো অধিকার আমার নেই।</strong>
+            <strong>রীতা,</strong>
+            আমার কথা বা কাজে তোমার মনে কষ্ট হয়েছে।
+            আমি তখন হয়তো তোমার কষ্টটা পুরোপুরি
+            বুঝিনি, কিন্তু এখন বুঝতে পারছি—তোমার
+            অনুভূতিকে ছোট করে দেখার কোনো অধিকার
+            আমার নেই।
           </p>
+
           <p>
-            “আমি তো এটা বোঝাতে চাইনি”—এটা বললেই তোমার কষ্ট মুছে যায় না। তাই আমি নিজের ভুলের দায় নিচ্ছি। তোমার রাগ, অভিমান আর দূরত্ব—সবটাই আমি সম্মান করছি।
+            “আমি তো এটা বোঝাতে চাইনি”—এটা বললে
+            তোমার কষ্ট মুছে যায় না। তাই আমি নিজের
+            ভুলের দায় নিচ্ছি। তোমার রাগ আর অভিমান
+            দুটোই সত্যি, আর আমি সেগুলোকে সম্মান করছি।
           </p>
+
           <div class="quote">
-            আমি শুধু ক্ষমা চাইছি না; আমি চাই আমার আচরণে তুমি বুঝতে পারো যে আমি সত্যিই শিখেছি।
+            আমি শুধু মুখে ক্ষমা চাইতে চাই না;
+            আমার আচরণে তোমাকে দেখাতে চাই যে
+            আমি সত্যিই বুঝেছি।
           </div>
+
         </div>
+
+        <div class="btn-row">
+
+          <button
+            class="btn btn-primary next-btn"
+          >
+            আরেকটু শুনবে? 🥺
+          </button>
+
+        </div>
+
       </div>
     </section>
 
-    <section class="section">
-      <div class="card reveal">
-        <div class="tiny">What you mean to me</div>
-        <h2>তুমি আমার কাছে “শুধু একজন” নও</h2>
+    <!-- Page 3 -->
+
+    <section
+      class="page"
+      data-page="2"
+    >
+      <div class="card">
+
+        <div class="tiny">
+          What you mean to me
+        </div>
+
+        <h2>
+          তুমি আমার কাছে “শুধু একজন” নও
+        </h2>
+
         <div class="message">
+
           <p>
-            তোমার সাথে কথা বলা, তোমাকে দিনের ছোট ছোট খবর দেওয়া, তোমার হাসি, তোমার রাগ—সবকিছুই আমার দিনের অংশ। তাই যখন আমার জন্য তুমি কষ্ট পাও, তখন শুধু সম্পর্কটা নয়, <strong>আমার নিজের সবচেয়ে আপন মানুষটাকেই আমি আঘাত করি।</strong>
+            তোমার সঙ্গে কথা বলা, দিনের ছোট ছোট
+            খবর ভাগ করা, তোমার হাসি, তোমার রাগ—
+            সবকিছুই আমার জীবনের অংশ।
           </p>
+
           <p>
-            আমি চাই না তুমি আমার ভালোবাসা শুধু কথায় বিশ্বাস করো। আমি চাই আমার ধৈর্য, দায়িত্ব আর ব্যবহার তোমাকে নিরাপদ অনুভব করাক।
+            তাই আমার জন্য যখন তুমি কষ্ট পাও,
+            তখন আমি আমার সবচেয়ে আপন মানুষটাকেই
+            আঘাত করি।
           </p>
+
+          <p>
+            আমি চাই না তুমি আমার ভালোবাসা শুধু
+            কথায় বিশ্বাস করো। আমি চাই আমার ধৈর্য,
+            দায়িত্ব আর ব্যবহার তোমাকে নিরাপদ ও
+            গুরুত্বপূর্ণ অনুভব করাক।
+          </p>
+
         </div>
+
+        <div class="btn-row">
+
+          <button
+            class="btn btn-primary next-btn"
+          >
+            আমার প্রতিশ্রুতিগুলো দেখো 🌷
+          </button>
+
+        </div>
+
       </div>
     </section>
 
-    <section class="section">
-      <div class="card reveal">
-        <div class="tiny">My promises</div>
-        <h2>এবার থেকে আমি যা মেনে চলব</h2>
+    <!-- Page 4 -->
+
+    <section
+      class="page"
+      data-page="3"
+    >
+      <div class="card">
+
+        <div class="tiny">
+          My promises
+        </div>
+
+        <h2>
+          এবার থেকে আমি যা মেনে চলব
+        </h2>
+
         <div class="promise-grid">
+
           <div class="promise">
+
             <span>👂</span>
-            <b>আগে শুনব</b>
-            <small>তোমার কথা মাঝপথে কেটে নয়, পুরোটা বুঝে।</small>
+
+            <b>
+              আগে শুনব
+            </b>
+
+            <small>
+              তোমার কথা মাঝপথে কেটে নয়,
+              পুরোটা বুঝে শুনব।
+            </small>
+
           </div>
+
           <div class="promise">
+
             <span>🫶</span>
-            <b>কষ্টকে গুরুত্ব দেব</b>
-            <small>অজুহাত না দিয়ে তোমার অনুভূতিকে সম্মান করব।</small>
+
+            <b>
+              কষ্টকে গুরুত্ব দেব
+            </b>
+
+            <small>
+              অজুহাত না দিয়ে তোমার
+              অনুভূতিকে সম্মান করব।
+            </small>
+
           </div>
+
           <div class="promise">
+
             <span>🌱</span>
-            <b>আচরণে বদলাব</b>
-            <small>একদিন নয়, নিয়মিত ছোট ছোট কাজে প্রমাণ করব।</small>
+
+            <b>
+              আচরণে বদলাব
+            </b>
+
+            <small>
+              একদিন নয়, নিয়মিত ছোট ছোট
+              কাজে সেটা প্রমাণ করব।
+            </small>
+
           </div>
+
         </div>
+
+        <div class="btn-row">
+
+          <button
+            class="btn btn-primary next-btn"
+          >
+            শেষ কথাটা বলি? ❤️
+          </button>
+
+        </div>
+
       </div>
     </section>
 
-    <section class="final">
-      <div class="card reveal">
-        <div class="tiny">From my heart</div>
-        <h2>আমাকে একটু সময় নিয়ে ক্ষমা করতে পারবে?</h2>
+    <!-- Page 5 -->
+
+    <section
+      class="page"
+      data-page="4"
+    >
+      <div class="card">
+
+        <div class="tiny">
+          From my heart
+        </div>
+
+        <h2>
+          রীতা, আমাকে ক্ষমা করতে পারবে?
+        </h2>
+
         <p class="lead">
-          এখনই উত্তর দিতে হবে না। তোমার যতটা সময় দরকার, নাও। শুধু এটুকু জানো—আমি তোমাকে চাপ দিতে নয়, তোমার মনটা বুঝতে এবং সম্পর্কটা যত্নে রাখতে চাই।
+          এখনই উত্তর দিতে হবে না।
+          তোমার যতটা সময় দরকার, নাও।
+          আমি তোমাকে চাপ দিতে চাই না—
+          আমি শুধু তোমার মনটা বুঝতে এবং
+          আমাদের সম্পর্কটাকে আরও যত্নে
+          রাখতে চাই।
         </p>
-        <div class="actions">
-          <button class="btn btn-primary" id="talkBtn">একটু কথা বলব ❤️</button>
-          <button class="btn btn-soft" id="timeBtn">আমার একটু সময় দরকার</button>
+
+        <div class="btn-row">
+
+          <button
+            class="btn btn-primary"
+            id="talkBtn"
+          >
+            একটু কথা বলব ❤️
+          </button>
+
+          <button
+            class="btn btn-soft"
+            id="timeBtn"
+          >
+            আমার একটু সময় দরকার
+          </button>
+
         </div>
-        <div class="reply" id="reply"></div>
+
+        <div
+          class="reply"
+          id="reply"
+        ></div>
+
         <div class="signature">
-          অনেক ভালোবাসা আর সত্যি অনুতাপ নিয়ে—<br />
-          <b>তোমার Anubhab</b>
+
+          অনেক ভালোবাসা আর সত্যি অনুতাপ নিয়ে—
+          <br>
+
+          <b>
+            তোমার Anubhab
+          </b>
+
         </div>
+
       </div>
     </section>
 
-    <div class="footer-note">Made with love, patience and a sincere apology.</div>
   </main>
 
+  <!-- Back button -->
+
+  <button
+    class="btn back-btn"
+    id="backBtn"
+    aria-label="আগের পাতায় ফিরে যাও"
+    title="আগের পাতা"
+  >
+    ←
+  </button>
+
+  <!-- Page indicator dots -->
+
+  <div
+    class="progress-wrap"
+    id="progressDots"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Music button -->
+
+  <button
+    class="btn music"
+    id="musicBtn"
+    aria-label="Play or pause music"
+    title="Music"
+  >
+    ♫
+  </button>
+
   <script>
-    const hearts = document.getElementById('hearts');
-    const progress = document.getElementById('progress');
-    const musicBtn = document.getElementById('musicBtn');
-    const song = document.getElementById('song');
-    const reply = document.getElementById('reply');
+    const pages =
+      [...document.querySelectorAll(".page")];
+
+    const nextButtons =
+      document.querySelectorAll(".next-btn");
+
+    const backBtn =
+      document.getElementById("backBtn");
+
+    const progressDots =
+      document.getElementById("progressDots");
+
+    const hearts =
+      document.getElementById("hearts");
+
+    const musicBtn =
+      document.getElementById("musicBtn");
+
+    const song =
+      document.getElementById("song");
+
+    const reply =
+      document.getElementById("reply");
+
+    let currentPage = 0;
+    let playing = false;
+
+    /*
+      Page indicator তৈরি করা
+    */
+
+    pages.forEach((page, index) => {
+      const dot =
+        document.createElement("span");
+
+      dot.className =
+        "dot" +
+        (index === 0 ? " active" : "");
+
+      progressDots.appendChild(dot);
+    });
+
+    const dots =
+      [...document.querySelectorAll(".dot")];
+
+    /*
+      একটি page থেকে অন্য page-এ যাওয়ার function
+    */
+
+    function showPage(index) {
+      if (
+        index < 0 ||
+        index >= pages.length ||
+        index === currentPage
+      ) {
+        return;
+      }
+
+      const oldPage =
+        pages[currentPage];
+
+      const newPage =
+        pages[index];
+
+      const movingForward =
+        index > currentPage;
+
+      if (movingForward) {
+        oldPage.classList.add("exit-left");
+      }
+
+      oldPage.classList.remove("active");
+
+      if (movingForward) {
+        newPage.style.transform =
+          "translateX(38px) scale(0.97)";
+      } else {
+        newPage.style.transform =
+          "translateX(-38px) scale(0.97)";
+      }
+
+      requestAnimationFrame(() => {
+        newPage.classList.add("active");
+        newPage.style.transform = "";
+      });
+
+      setTimeout(() => {
+        oldPage.classList.remove("exit-left");
+      }, 520);
+
+      currentPage = index;
+
+      dots.forEach((dot, dotIndex) => {
+        dot.classList.toggle(
+          "active",
+          dotIndex === currentPage
+        );
+      });
+
+      if (currentPage > 0) {
+        backBtn.style.display = "inline-flex";
+      } else {
+        backBtn.style.display = "none";
+      }
+
+      burst(10);
+    }
+
+    /*
+      Next buttons
+    */
+
+    nextButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        showPage(currentPage + 1);
+      });
+    });
+
+    /*
+      Back button
+    */
+
+    backBtn.addEventListener("click", () => {
+      showPage(currentPage - 1);
+    });
+
+    /*
+      একটি floating heart তৈরি করা
+    */
 
     function createHeart() {
-      const heart = document.createElement('span');
-      const symbols = ['❤', '♡', '♥'];
-      heart.className = 'heart';
-      heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.fontSize = (14 + Math.random() * 18) + 'px';
-      heart.style.animationDuration = (6 + Math.random() * 6) + 's';
-      heart.style.color = Math.random() > .5 ? '#e94f7c' : '#ff9ab5';
+      const heart =
+        document.createElement("span");
+
+      const symbols = [
+        "❤",
+        "♡",
+        "♥"
+      ];
+
+      heart.className = "heart";
+
+      heart.textContent =
+        symbols[
+          Math.floor(
+            Math.random() * symbols.length
+          )
+        ];
+
+      heart.style.left =
+        Math.random() * 100 + "vw";
+
+      heart.style.fontSize =
+        14 + Math.random() * 18 + "px";
+
+      heart.style.animationDuration =
+        6 + Math.random() * 6 + "s";
+
+      heart.style.color =
+        Math.random() > 0.5
+          ? "#e94f7c"
+          : "#ff9ab5";
+
       hearts.appendChild(heart);
-      setTimeout(() => heart.remove(), 12500);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 12500);
     }
 
-    setInterval(createHeart, 700);
-    for (let i = 0; i < 8; i++) setTimeout(createHeart, i * 180);
+    /*
+      নিয়মিত floating hearts
+    */
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('show');
-      });
-    }, { threshold: 0.16 });
+    setInterval(createHeart, 780);
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    for (let i = 0; i < 7; i++) {
+      setTimeout(
+        createHeart,
+        i * 190
+      );
+    }
 
-    window.addEventListener('scroll', () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      progress.style.width = (window.scrollY / max * 100) + '%';
-    });
+    /*
+      Button চাপলে অনেক heart বের হবে
+    */
 
-    let playing = false;
-    musicBtn.addEventListener('click', async () => {
-      try {
-        if (!playing) {
-          await song.play();
-          musicBtn.textContent = '❚❚';
-          playing = true;
-        } else {
-          song.pause();
-          musicBtn.textContent = '♫';
-          playing = false;
-        }
-      } catch (e) {
-        reply.textContent = 'Music add করতে folder-এর মধ্যে “our-song.mp3” নামে তোমাদের গানটি রাখো।';
-      }
-    });
-
-    document.getElementById('talkBtn').addEventListener('click', () => {
-      reply.innerHTML = 'ধন্যবাদ, ফুচু ❤️<br>আমি এবার শুধু বলব না—মন দিয়ে শুনব।';
-      burst();
-    });
-
-    document.getElementById('timeBtn').addEventListener('click', () => {
-      reply.innerHTML = 'ঠিক আছে। তোমার যতটা সময় দরকার, নাও।<br>আমি তোমার সিদ্ধান্ত আর অনুভূতিকে সম্মান করছি। 🤍';
-    });
-
-    function burst() {
-      for (let i = 0; i < 28; i++) {
+    function burst(count = 28) {
+      for (let i = 0; i < count; i++) {
         setTimeout(() => {
-          const h = document.createElement('span');
-          h.className = 'heart';
-          h.textContent = '❤';
-          h.style.left = (45 + Math.random() * 10) + 'vw';
-          h.style.bottom = '25vh';
-          h.style.fontSize = (14 + Math.random() * 24) + 'px';
-          h.style.animationDuration = (3 + Math.random() * 3) + 's';
-          h.style.color = '#e94f7c';
-          hearts.appendChild(h);
-          setTimeout(() => h.remove(), 6500);
-        }, i * 45);
+          const heart =
+            document.createElement("span");
+
+          heart.className = "heart";
+          heart.textContent = "❤";
+
+          heart.style.left =
+            44 + Math.random() * 12 + "vw";
+
+          heart.style.bottom = "22vh";
+
+          heart.style.fontSize =
+            14 + Math.random() * 22 + "px";
+
+          heart.style.animationDuration =
+            3 + Math.random() * 3 + "s";
+
+          heart.style.color = "#e94f7c";
+
+          hearts.appendChild(heart);
+
+          setTimeout(() => {
+            heart.remove();
+          }, 6500);
+
+        }, i * 42);
       }
     }
+
+    /*
+      Music button
+    */
+
+    musicBtn.addEventListener(
+      "click",
+      async () => {
+        try {
+          if (!playing) {
+            await song.play();
+
+            musicBtn.textContent = "❚❚";
+
+            playing = true;
+          } else {
+            song.pause();
+
+            musicBtn.textContent = "♫";
+
+            playing = false;
+          }
+        } catch (error) {
+          reply.textContent =
+            "গান চালাতে folder-এর মধ্যে “our-song.mp3” নামে তোমাদের special গানটি রাখো।";
+        }
+      }
+    );
+
+    /*
+      শেষের প্রথম button
+    */
+
+    document
+      .getElementById("talkBtn")
+      .addEventListener("click", () => {
+        reply.innerHTML =
+          "ধন্যবাদ, ফুচু ❤️<br>" +
+          "আমি এবার শুধু বলব না—মন দিয়ে তোমার সব কথা শুনব।";
+
+        burst();
+      });
+
+    /*
+      সময় দরকার button
+    */
+
+    document
+      .getElementById("timeBtn")
+      .addEventListener("click", () => {
+        reply.innerHTML =
+          "ঠিক আছে, ফুচু। তোমার যতটা সময় দরকার, নাও।<br>" +
+          "আমি তোমার অনুভূতি আর সিদ্ধান্তকে সম্মান করছি। 🤍";
+      });
   </script>
+
 </body>
 </html>
