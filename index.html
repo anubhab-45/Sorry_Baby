@@ -1,1324 +1,673 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta name="theme-color" content="#fff3f6">
-
-  <title>I'm Sorry, Fuchoo ❤️</title>
-
-  <style>
-    :root {
-      --bg-1: #fff8fa;
-      --bg-2: #ffe5ed;
-      --card: rgba(255, 255, 255, 0.86);
-      --text: #472a34;
-      --muted: #795865;
-      --accent: #e94f7c;
-      --accent-2: #ff8baa;
-      --line: rgba(233, 79, 124, 0.18);
-      --shadow: 0 24px 70px rgba(126, 39, 68, 0.17);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      margin: 0;
-      width: 100%;
-      min-height: 100%;
-      overflow: hidden;
-    }
-
-    body {
-      min-height: 100svh;
-
-      font-family:
-        "Noto Sans Bengali",
-        "Hind Siliguri",
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-      color: var(--text);
-
-      background:
-        radial-gradient(
-          circle at 10% 10%,
-          rgba(255, 255, 255, 0.95),
-          transparent 30%
-        ),
-        radial-gradient(
-          circle at 90% 18%,
-          rgba(255, 207, 221, 0.95),
-          transparent 28%
-        ),
-        linear-gradient(
-          145deg,
-          var(--bg-1),
-          var(--bg-2)
-        );
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-
-      background-image:
-        radial-gradient(
-          rgba(233, 79, 124, 0.08) 1px,
-          transparent 1px
-        );
-
-      background-size: 22px 22px;
-
-      mask-image:
-        linear-gradient(
-          to bottom,
-          #000 0%,
-          transparent 92%
-        );
-    }
-
-    /* Floating hearts */
-
-    .hearts {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .heart {
-      position: absolute;
-      bottom: -45px;
-      opacity: 0;
-
-      animation:
-        floatUp linear forwards;
-
-      filter:
-        drop-shadow(
-          0 5px 8px rgba(233, 79, 124, 0.14)
-        );
-    }
-
-    @keyframes floatUp {
-      0% {
-        transform:
-          translateY(0)
-          rotate(0deg)
-          scale(0.72);
-
-        opacity: 0;
-      }
-
-      12% {
-        opacity: 0.58;
-      }
-
-      100% {
-        transform:
-          translateY(-115vh)
-          rotate(20deg)
-          scale(1.2);
-
-        opacity: 0;
-      }
-    }
-
-    /* Main app */
-
-    .app {
-      position: relative;
-      z-index: 2;
-
-      min-height: 100svh;
-
-      display: grid;
-      place-items: center;
-
-      padding: 22px 14px 80px;
-    }
-
-    /* Each separate page */
-
-    .page {
-      position: absolute;
-
-      width: min(92%, 720px);
-      max-height: calc(100svh - 112px);
-
-      overflow-y: auto;
-      scrollbar-width: none;
-
-      opacity: 0;
-      visibility: hidden;
-
-      transform:
-        translateX(38px)
-        scale(0.97);
-
-      transition:
-        opacity 0.5s ease,
-        transform 0.5s ease,
-        visibility 0.5s;
-
-      pointer-events: none;
-    }
-
-    .page::-webkit-scrollbar {
-      display: none;
-    }
-
-    .page.active {
-      opacity: 1;
-      visibility: visible;
-
-      transform:
-        translateX(0)
-        scale(1);
-
-      pointer-events: auto;
-    }
-
-    .page.exit-left {
-      opacity: 0;
-
-      transform:
-        translateX(-38px)
-        scale(0.97);
-    }
-
-    /* Card design */
-
-    .card {
-      position: relative;
-      overflow: hidden;
-
-      width: 100%;
-
-      padding:
-        clamp(24px, 5vw, 44px);
-
-      border:
-        1px solid rgba(255, 255, 255, 0.92);
-
-      border-radius: 30px;
-
-      background: var(--card);
-
-      backdrop-filter: blur(16px);
-
-      box-shadow: var(--shadow);
-
-      text-align: center;
-    }
-
-    .card::after {
-      content: "";
-
-      position: absolute;
-
-      width: 170px;
-      height: 170px;
-
-      right: -75px;
-      top: -75px;
-
-      border-radius: 50%;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.72),
-          rgba(255, 139, 170, 0.2)
-        );
-
-      pointer-events: none;
-    }
-
-    .tiny {
-      position: relative;
-      z-index: 1;
-
-      font-size: 0.82rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-
-      color: var(--accent);
-      font-weight: 800;
-    }
-
-    h1,
-    h2,
-    p {
-      margin-top: 0;
-    }
-
-    h1 {
-      position: relative;
-      z-index: 1;
-
-      font-size:
-        clamp(2.25rem, 8vw, 4.5rem);
-
-      line-height: 1.08;
-      margin-bottom: 15px;
-    }
-
-    h2 {
-      position: relative;
-      z-index: 1;
-
-      font-size:
-        clamp(1.72rem, 5vw, 2.55rem);
-
-      line-height: 1.24;
-      margin-bottom: 16px;
-    }
-
-    /* Main heart */
-
-    .pulse-heart {
-      display: inline-grid;
-      place-items: center;
-
-      width: 88px;
-      height: 88px;
-
-      margin: 12px 0 22px;
-
-      border-radius: 50%;
-
-      background:
-        linear-gradient(
-          145deg,
-          #ffffff,
-          #ffe4ec
-        );
-
-      box-shadow:
-        0 12px 35px rgba(233, 79, 124, 0.2);
-
-      font-size: 2.5rem;
-
-      animation:
-        pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%,
-      100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.09);
-      }
-    }
-
-    .lead {
-      position: relative;
-      z-index: 1;
-
-      font-size:
-        clamp(1.01rem, 3.5vw, 1.22rem);
-
-      line-height: 1.86;
-
-      color: var(--muted);
-
-      max-width: 620px;
-
-      margin:
-        0 auto 24px;
-    }
-
-    .message {
-      position: relative;
-      z-index: 1;
-
-      color: var(--muted);
-
-      font-size: 1.04rem;
-      line-height: 1.95;
-
-      text-align: left;
-    }
-
-    .message strong {
-      color: var(--text);
-    }
-
-    .quote {
-      margin: 22px 0 0;
-
-      padding: 17px 19px;
-
-      border-left:
-        4px solid var(--accent);
-
-      border-radius:
-        0 18px 18px 0;
-
-      background:
-        rgba(255, 255, 255, 0.68);
-
-      color: var(--text);
-
-      font-weight: 700;
-      line-height: 1.8;
-    }
-
-    /* Promise boxes */
-
-    .promise-grid {
-      position: relative;
-      z-index: 1;
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
-      gap: 12px;
-
-      margin: 20px 0 2px;
-    }
-
-    .promise {
-      min-height: 130px;
-
-      display: grid;
-      place-content: center;
-
-      gap: 7px;
-
-      padding: 18px 12px;
-
-      border-radius: 20px;
-
-      border:
-        1px solid var(--line);
-
-      background:
-        rgba(255, 255, 255, 0.72);
-
-      color: var(--muted);
-
-      line-height: 1.5;
-    }
-
-    .promise span {
-      font-size: 1.8rem;
-    }
-
-    .promise b {
-      color: var(--text);
-    }
-
-    /* Buttons */
-
-    .btn-row {
-      position: relative;
-      z-index: 1;
-
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-
-      gap: 11px;
-
-      margin-top: 24px;
-    }
-
-    .btn {
-      border: 0;
-
-      border-radius: 999px;
-
-      padding: 14px 22px;
-
-      font: inherit;
-      font-weight: 800;
-
-      cursor: pointer;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      gap: 8px;
-
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        opacity 0.2s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    .btn-primary {
-      color: #ffffff;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--accent),
-          var(--accent-2)
-        );
-
-      box-shadow:
-        0 12px 28px rgba(233, 79, 124, 0.29);
-    }
-
-    .btn-soft {
-      color: var(--accent);
-
-      background: #ffffff;
-
-      border:
-        1px solid var(--line);
-    }
-
-    /* Back button */
-
-    .back-btn {
-      position: fixed;
-
-      left: 16px;
-      bottom: 16px;
-
-      z-index: 30;
-
-      width: 48px;
-      height: 48px;
-
-      padding: 0;
-
-      border-radius: 50%;
-
-      border:
-        1px solid rgba(255, 255, 255, 0.92);
-
-      background:
-        rgba(255, 255, 255, 0.84);
-
-      box-shadow:
-        0 10px 25px rgba(126, 39, 68, 0.16);
-
-      color: var(--accent);
-
-      font-size: 1.15rem;
-
-      backdrop-filter: blur(10px);
-
-      display: none;
-    }
-
-    /* Music button */
-
-    .music {
-      position: fixed;
-
-      right: 16px;
-      bottom: 16px;
-
-      z-index: 30;
-
-      width: 48px;
-      height: 48px;
-
-      padding: 0;
-
-      border-radius: 50%;
-
-      border:
-        1px solid rgba(255, 255, 255, 0.92);
-
-      background:
-        rgba(255, 255, 255, 0.84);
-
-      box-shadow:
-        0 10px 25px rgba(126, 39, 68, 0.16);
-
-      color: var(--text);
-
-      font-size: 1.12rem;
-
-      backdrop-filter: blur(10px);
-    }
-
-    /* Progress dots */
-
-    .progress-wrap {
-      position: fixed;
-
-      left: 50%;
-      bottom: 24px;
-
-      z-index: 25;
-
-      transform: translateX(-50%);
-
-      display: flex;
-      gap: 7px;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(233, 79, 124, 0.22);
-
-      transition:
-        width 0.3s ease,
-        background 0.3s ease;
-    }
-
-    .dot.active {
-      width: 24px;
-
-      border-radius: 999px;
-
-      background: var(--accent);
-    }
-
-    .reply {
-      position: relative;
-      z-index: 1;
-
-      min-height: 34px;
-
-      margin-top: 20px;
-
-      color: var(--accent);
-
-      font-weight: 800;
-      line-height: 1.75;
-    }
-
-    .signature {
-      position: relative;
-      z-index: 1;
-
-      margin-top: 24px;
-
-      color: var(--muted);
-
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-
-    .signature b {
-      color: var(--text);
-    }
-
-    /* Mobile responsive */
-
-    @media (max-width: 620px) {
-      .app {
-        padding:
-          16px 10px 76px;
-      }
-
-      .page {
-        width:
-          min(94%, 720px);
-
-        max-height:
-          calc(100svh - 98px);
-      }
-
-      .card {
-        border-radius: 24px;
-
-        padding:
-          25px 21px;
-      }
-
-      .promise-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .promise {
-        min-height: 0;
-
-        grid-template-columns:
-          auto 1fr;
-
-        text-align: left;
-        align-items: center;
-      }
-
-      .promise span {
-        grid-row: span 2;
-      }
-
-      .btn-row {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .back-btn,
-      .music {
-        width: 45px;
-        height: 45px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fff1f5">
+<title>Sorry Fuchoo ❤️</title>
+
+<style>
+:root{
+  --pink:#e94f7c;
+  --light:#ff8eac;
+  --text:#482b35;
+  --muted:#765762;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  overflow:hidden;
+}
+
+body{
+  min-height:100svh;
+  font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 10%,#fff 0,transparent 30%),
+    radial-gradient(circle at 90% 15%,#ffcbd9 0,transparent 28%),
+    linear-gradient(145deg,#fff8fa,#ffe3eb);
+}
+
+.hearts{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.heart{
+  position:absolute;
+  bottom:-40px;
+  opacity:0;
+  animation:float linear forwards;
+}
+
+@keyframes float{
+  0%{
+    transform:translateY(0) rotate(0) scale(.7);
+    opacity:0;
+  }
+  15%{opacity:.6}
+  100%{
+    transform:translateY(-115vh) rotate(20deg) scale(1.2);
+    opacity:0;
+  }
+}
+
+.app{
+  position:relative;
+  z-index:2;
+  min-height:100svh;
+  display:grid;
+  place-items:center;
+  padding:15px 12px 75px;
+}
+
+.page{
+  position:absolute;
+  width:min(93%,700px);
+  max-height:calc(100svh - 95px);
+  overflow-y:auto;
+  scrollbar-width:none;
+  opacity:0;
+  visibility:hidden;
+  transform:translateX(35px) scale(.97);
+  transition:.45s ease;
+  pointer-events:none;
+}
+
+.page::-webkit-scrollbar{display:none}
+
+.page.active{
+  opacity:1;
+  visibility:visible;
+  transform:translateX(0) scale(1);
+  pointer-events:auto;
+}
+
+.card{
+  position:relative;
+  overflow:hidden;
+  padding:clamp(24px,5vw,42px);
+  text-align:center;
+  border-radius:28px;
+  border:1px solid rgba(255,255,255,.9);
+  background:rgba(255,255,255,.87);
+  backdrop-filter:blur(15px);
+  box-shadow:0 22px 65px rgba(126,39,68,.17);
+}
+
+.card::after{
+  content:"";
+  position:absolute;
+  width:160px;
+  height:160px;
+  right:-75px;
+  top:-75px;
+  border-radius:50%;
+  background:rgba(255,139,170,.18);
+}
+
+.tiny{
+  position:relative;
+  z-index:1;
+  color:var(--pink);
+  font-size:.82rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+h1,h2,p{margin-top:0}
+
+h1{
+  position:relative;
+  z-index:1;
+  margin-bottom:14px;
+  font-size:clamp(2.2rem,8vw,4.3rem);
+  line-height:1.08;
+}
+
+h2{
+  position:relative;
+  z-index:1;
+  margin-bottom:16px;
+  font-size:clamp(1.7rem,5vw,2.45rem);
+  line-height:1.25;
+}
+
+.big-heart{
+  display:inline-grid;
+  place-items:center;
+  width:85px;
+  height:85px;
+  margin:14px 0 20px;
+  border-radius:50%;
+  background:linear-gradient(145deg,#fff,#ffe1e9);
+  box-shadow:0 12px 30px rgba(233,79,124,.2);
+  font-size:2.5rem;
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  50%{transform:scale(1.1)}
+}
+
+.lead{
+  position:relative;
+  z-index:1;
+  max-width:610px;
+  margin:0 auto 24px;
+  color:var(--muted);
+  font-size:clamp(1rem,3.5vw,1.2rem);
+  line-height:1.85;
+}
+
+.message{
+  position:relative;
+  z-index:1;
+  text-align:left;
+  color:var(--muted);
+  font-size:1.03rem;
+  line-height:1.9;
+}
+
+.message strong{color:var(--text)}
+
+.quote{
+  margin-top:20px;
+  padding:16px 18px;
+  color:var(--text);
+  font-weight:700;
+  line-height:1.75;
+  border-left:4px solid var(--pink);
+  border-radius:0 16px 16px 0;
+  background:rgba(255,255,255,.72);
+}
+
+.promises{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:11px;
+  margin-top:20px;
+}
+
+.promise{
+  display:grid;
+  place-content:center;
+  min-height:125px;
+  padding:16px 12px;
+  border:1px solid rgba(233,79,124,.16);
+  border-radius:18px;
+  background:rgba(255,255,255,.72);
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.promise span{font-size:1.8rem}
+.promise b{color:var(--text)}
+
+.buttons{
+  position:relative;
+  z-index:1;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:24px;
+}
+
+button{
+  border:0;
+  border-radius:999px;
+  padding:14px 21px;
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:active{transform:scale(.97)}
+
+.primary{
+  color:#fff;
+  background:linear-gradient(135deg,var(--pink),var(--light));
+  box-shadow:0 11px 25px rgba(233,79,124,.27);
+}
+
+.soft{
+  color:var(--pink);
+  background:#fff;
+  border:1px solid rgba(233,79,124,.18);
+}
+
+.back,.music{
+  position:fixed;
+  bottom:16px;
+  z-index:20;
+  width:47px;
+  height:47px;
+  padding:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.88);
+  box-shadow:0 9px 22px rgba(126,39,68,.16);
+}
+
+.back{
+  left:16px;
+  display:none;
+  color:var(--pink);
+  font-size:1.15rem;
+}
+
+.music{
+  right:16px;
+  color:var(--text);
+  font-size:1.1rem;
+}
+
+.dots{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  z-index:15;
+  display:flex;
+  gap:6px;
+  transform:translateX(-50%);
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:rgba(233,79,124,.23);
+  transition:.3s;
+}
+
+.dot.active{
+  width:23px;
+  border-radius:20px;
+  background:var(--pink);
+}
+
+.reply{
+  position:relative;
+  z-index:1;
+  min-height:30px;
+  margin-top:18px;
+  color:var(--pink);
+  font-weight:800;
+  line-height:1.7;
+}
+
+.signature{
+  position:relative;
+  z-index:1;
+  margin-top:22px;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.signature b{color:var(--text)}
+
+@media(max-width:620px){
+  .card{
+    padding:25px 20px;
+    border-radius:23px;
+  }
+
+  .promises{grid-template-columns:1fr}
+
+  .promise{
+    min-height:0;
+    grid-template-columns:auto 1fr;
+    align-items:center;
+    text-align:left;
+    gap:5px 12px;
+  }
+
+  .promise span{grid-row:span 2}
+
+  .buttons{flex-direction:column}
+  .buttons button{width:100%}
+}
+</style>
 </head>
 
 <body>
 
-  <!-- Floating hearts container -->
+<div class="hearts" id="hearts"></div>
 
-  <div class="hearts" id="hearts"></div>
+<!-- index.html-এর একই folder-এ our-song.mp3 রাখতে হবে -->
+<audio id="song" loop preload="auto">
+  <source src="our-song.mp3" type="audio/mpeg">
+</audio>
 
-  <!--
-    গান যোগ করতে index.html-এর সঙ্গে
-    একই folder-এ গানটি রাখবে।
+<main class="app">
 
-    গানের নাম অবশ্যই হবে:
-    our-song.mp3
-  -->
+  <!-- PAGE 1 -->
+  <section class="page active">
+    <div class="card">
+      <div class="tiny">For my favourite person</div>
+      <div class="big-heart">❤️</div>
 
-  <audio id="song" loop preload="none">
-    <source
-      src="our-song.mp3"
-      type="audio/mpeg"
-    >
-  </audio>
+      <h1>I'm Sorry, Fuchoo</h1>
 
-  <main class="app">
+      <p class="lead">
+        আজ তোমার মন খারাপের কারণ আমি।
+        কোনো অজুহাত দেব না—শুধু সত্যি করে
+        আমার মনের কথাগুলো তোমাকে বলতে চাই।
+      </p>
 
-    <!-- Page 1 -->
+      <div class="buttons">
+        <button class="primary next">
+          আমার কথাটা শোনো ফুচু ❤️
+        </button>
+      </div>
+    </div>
+  </section>
 
-    <section
-      class="page active"
-      data-page="0"
-    >
-      <div class="card">
+  <!-- PAGE 2 -->
+  <section class="page">
+    <div class="card">
+      <div class="tiny">No excuses</div>
 
-        <div class="tiny">
-          For my favourite person
-        </div>
+      <h2>ভুলটা আমারই ছিল</h2>
 
-        <div class="pulse-heart">
-          ❤️
-        </div>
-
-        <h1>
-          I'm Sorry, Fuchoo
-        </h1>
-
-        <p class="lead">
-          আজ তোমার মন খারাপের কারণ আমি।
-          কোনো অজুহাত দেব না—শুধু সত্যি করে
-          আমার মনের কথাগুলো তোমাকে বলতে চাই।
+      <div class="message">
+        <p>
+          ফুচু, আমার কথা বা কাজে তোমার মনে কষ্ট হয়েছে।
+          আমি তখন হয়তো তোমার কষ্টটা পুরোপুরি বুঝিনি।
+          কিন্তু এখন বুঝতে পারছি—
+          <strong>
+            তোমার অনুভূতিকে ছোট করে দেখার কোনো অধিকার আমার নেই।
+          </strong>
         </p>
 
-        <div class="btn-row">
-
-          <button
-            class="btn btn-primary next-btn"
-          >
-            আমার কথাটা শোনো ফুচু ❤️
-          </button>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Page 2 -->
-
-    <section
-      class="page"
-      data-page="1"
-    >
-      <div class="card">
-
-        <div class="tiny">
-          No excuses
-        </div>
-
-        <h2>
-          ভুলটা আমারই ছিল
-        </h2>
-
-        <div class="message">
-
-          <p>
-            <strong>রীতা,</strong>
-            আমার কথা বা কাজে তোমার মনে কষ্ট হয়েছে।
-            আমি তখন হয়তো তোমার কষ্টটা পুরোপুরি
-            বুঝিনি, কিন্তু এখন বুঝতে পারছি—তোমার
-            অনুভূতিকে ছোট করে দেখার কোনো অধিকার
-            আমার নেই।
-          </p>
-
-          <p>
-            “আমি তো এটা বোঝাতে চাইনি”—এটা বললে
-            তোমার কষ্ট মুছে যায় না। তাই আমি নিজের
-            ভুলের দায় নিচ্ছি। তোমার রাগ আর অভিমান
-            দুটোই সত্যি, আর আমি সেগুলোকে সম্মান করছি।
-          </p>
-
-          <div class="quote">
-            আমি শুধু মুখে ক্ষমা চাইতে চাই না;
-            আমার আচরণে তোমাকে দেখাতে চাই যে
-            আমি সত্যিই বুঝেছি।
-          </div>
-
-        </div>
-
-        <div class="btn-row">
-
-          <button
-            class="btn btn-primary next-btn"
-          >
-            আরেকটু শুনবে? 🥺
-          </button>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Page 3 -->
-
-    <section
-      class="page"
-      data-page="2"
-    >
-      <div class="card">
-
-        <div class="tiny">
-          What you mean to me
-        </div>
-
-        <h2>
-          তুমি আমার কাছে “শুধু একজন” নও
-        </h2>
-
-        <div class="message">
-
-          <p>
-            তোমার সঙ্গে কথা বলা, দিনের ছোট ছোট
-            খবর ভাগ করা, তোমার হাসি, তোমার রাগ—
-            সবকিছুই আমার জীবনের অংশ।
-          </p>
-
-          <p>
-            তাই আমার জন্য যখন তুমি কষ্ট পাও,
-            তখন আমি আমার সবচেয়ে আপন মানুষটাকেই
-            আঘাত করি।
-          </p>
-
-          <p>
-            আমি চাই না তুমি আমার ভালোবাসা শুধু
-            কথায় বিশ্বাস করো। আমি চাই আমার ধৈর্য,
-            দায়িত্ব আর ব্যবহার তোমাকে নিরাপদ ও
-            গুরুত্বপূর্ণ অনুভব করাক।
-          </p>
-
-        </div>
-
-        <div class="btn-row">
-
-          <button
-            class="btn btn-primary next-btn"
-          >
-            আমার প্রতিশ্রুতিগুলো দেখো 🌷
-          </button>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Page 4 -->
-
-    <section
-      class="page"
-      data-page="3"
-    >
-      <div class="card">
-
-        <div class="tiny">
-          My promises
-        </div>
-
-        <h2>
-          এবার থেকে আমি যা মেনে চলব
-        </h2>
-
-        <div class="promise-grid">
-
-          <div class="promise">
-
-            <span>👂</span>
-
-            <b>
-              আগে শুনব
-            </b>
-
-            <small>
-              তোমার কথা মাঝপথে কেটে নয়,
-              পুরোটা বুঝে শুনব।
-            </small>
-
-          </div>
-
-          <div class="promise">
-
-            <span>🫶</span>
-
-            <b>
-              কষ্টকে গুরুত্ব দেব
-            </b>
-
-            <small>
-              অজুহাত না দিয়ে তোমার
-              অনুভূতিকে সম্মান করব।
-            </small>
-
-          </div>
-
-          <div class="promise">
-
-            <span>🌱</span>
-
-            <b>
-              আচরণে বদলাব
-            </b>
-
-            <small>
-              একদিন নয়, নিয়মিত ছোট ছোট
-              কাজে সেটা প্রমাণ করব।
-            </small>
-
-          </div>
-
-        </div>
-
-        <div class="btn-row">
-
-          <button
-            class="btn btn-primary next-btn"
-          >
-            শেষ কথাটা বলি? ❤️
-          </button>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Page 5 -->
-
-    <section
-      class="page"
-      data-page="4"
-    >
-      <div class="card">
-
-        <div class="tiny">
-          From my heart
-        </div>
-
-        <h2>
-          রীতা, আমাকে ক্ষমা করতে পারবে?
-        </h2>
-
-        <p class="lead">
-          এখনই উত্তর দিতে হবে না।
-          তোমার যতটা সময় দরকার, নাও।
-          আমি তোমাকে চাপ দিতে চাই না—
-          আমি শুধু তোমার মনটা বুঝতে এবং
-          আমাদের সম্পর্কটাকে আরও যত্নে
-          রাখতে চাই।
+        <p>
+          “আমি তো এটা বোঝাতে চাইনি” বললেই তোমার কষ্টটা
+          মুছে যায় না। তাই কোনো অজুহাত না দিয়ে আমি নিজের
+          ভুলের দায় নিচ্ছি।
         </p>
 
-        <div class="btn-row">
-
-          <button
-            class="btn btn-primary"
-            id="talkBtn"
-          >
-            একটু কথা বলব ❤️
-          </button>
-
-          <button
-            class="btn btn-soft"
-            id="timeBtn"
-          >
-            আমার একটু সময় দরকার
-          </button>
-
+        <div class="quote">
+          আমি শুধু মুখে ক্ষমা চাইতে চাই না।
+          আমার আচরণে তোমাকে বোঝাতে চাই যে আমি সত্যিই বুঝেছি।
         </div>
-
-        <div
-          class="reply"
-          id="reply"
-        ></div>
-
-        <div class="signature">
-
-          অনেক ভালোবাসা আর সত্যি অনুতাপ নিয়ে—
-          <br>
-
-          <b>
-            তোমার Anubhab
-          </b>
-
-        </div>
-
       </div>
-    </section>
 
-  </main>
+      <div class="buttons">
+        <button class="primary next">আরেকটু শুনবে? 🥺</button>
+      </div>
+    </div>
+  </section>
 
-  <!-- Back button -->
+  <!-- PAGE 3 -->
+  <section class="page">
+    <div class="card">
+      <div class="tiny">What you mean to me</div>
 
-  <button
-    class="btn back-btn"
-    id="backBtn"
-    aria-label="আগের পাতায় ফিরে যাও"
-    title="আগের পাতা"
-  >
-    ←
-  </button>
+      <h2>তুমি আমার কাছে “শুধু একজন” নও</h2>
 
-  <!-- Page indicator dots -->
+      <div class="message">
+        <p>
+          তোমার সঙ্গে কথা বলা, দিনের ছোট ছোট খবর ভাগ করা,
+          তোমার হাসি, তোমার রাগ—সবকিছুই আমার জীবনের অংশ।
+        </p>
 
-  <div
-    class="progress-wrap"
-    id="progressDots"
-    aria-hidden="true"
-  ></div>
+        <p>
+          তাই আমার জন্য যখন তুমি কষ্ট পাও, তখন আমি শুধু
+          একটা ভুল করি না—
+          <strong>আমার সবচেয়ে আপন মানুষটাকেই আঘাত করি।</strong>
+        </p>
 
-  <!-- Music button -->
+        <p>
+          আমি চাই না তুমি আমার ভালোবাসা শুধু কথায় বিশ্বাস করো।
+          আমি চাই আমার দায়িত্ব, ধৈর্য আর ব্যবহার তোমাকে
+          গুরুত্বপূর্ণ এবং নিরাপদ অনুভব করাক।
+        </p>
+      </div>
 
-  <button
-    class="btn music"
-    id="musicBtn"
-    aria-label="Play or pause music"
-    title="Music"
-  >
-    ♫
-  </button>
+      <div class="buttons">
+        <button class="primary next">
+          আমার প্রতিশ্রুতিগুলো দেখো 🌷
+        </button>
+      </div>
+    </div>
+  </section>
 
-  <script>
-    const pages =
-      [...document.querySelectorAll(".page")];
+  <!-- PAGE 4 -->
+  <section class="page">
+    <div class="card">
+      <div class="tiny">My promises</div>
 
-    const nextButtons =
-      document.querySelectorAll(".next-btn");
+      <h2>এবার থেকে আমি যা মেনে চলব</h2>
 
-    const backBtn =
-      document.getElementById("backBtn");
+      <div class="promises">
+        <div class="promise">
+          <span>👂</span>
+          <b>আগে শুনব</b>
+          <small>তোমার কথা মাঝপথে না কেটে পুরোটা বুঝে শুনব।</small>
+        </div>
 
-    const progressDots =
-      document.getElementById("progressDots");
+        <div class="promise">
+          <span>🫶</span>
+          <b>কষ্টকে গুরুত্ব দেব</b>
+          <small>অজুহাত না দিয়ে তোমার অনুভূতিকে সম্মান করব।</small>
+        </div>
 
-    const hearts =
-      document.getElementById("hearts");
+        <div class="promise">
+          <span>🌱</span>
+          <b>আচরণে বদলাব</b>
+          <small>শুধু একদিন নয়, প্রতিদিনের কাজে প্রমাণ করব।</small>
+        </div>
+      </div>
 
-    const musicBtn =
-      document.getElementById("musicBtn");
+      <div class="buttons">
+        <button class="primary next">শেষ কথাটা বলি? ❤️</button>
+      </div>
+    </div>
+  </section>
 
-    const song =
-      document.getElementById("song");
+  <!-- PAGE 5 -->
+  <section class="page">
+    <div class="card">
+      <div class="tiny">From my heart</div>
 
-    const reply =
-      document.getElementById("reply");
+      <h2>ফুচু, আমাকে ক্ষমা করবে?</h2>
 
-    let currentPage = 0;
-    let playing = false;
+      <div class="message">
+        <p>
+          আমি জানি, শুধু “Sorry” বললেই তোমার কষ্টটা
+          কমে যাবে না। আমি যে ভুলটা করেছি, সেটার গুরুত্ব
+          বুঝতে পেরেছি এবং এটাকে হালকাভাবে নিচ্ছি না।
+        </p>
 
-    /*
-      Page indicator তৈরি করা
-    */
+        <p>
+          আমি শুধু তোমার রাগ কমানোর জন্য এসব বলছি না।
+          আমি বলছি কারণ
+          <strong>
+            তুমি আমার কাছে সত্যিই খুব গুরুত্বপূর্ণ এবং
+            আমাদের সম্পর্কটাকে আরও সুন্দর ও যত্নের সঙ্গে রাখতে চাই।
+          </strong>
+        </p>
 
-    pages.forEach((page, index) => {
-      const dot =
-        document.createElement("span");
+        <p>
+          আমি আমার কথা তোমার ওপর চাপিয়ে দিতে চাই না।
+          আগে তোমার সব কথা মন দিয়ে শুনতে চাই,
+          তারপর তোমার পাশেই থেকে ভুলটা ঠিক করতে চাই।
+        </p>
 
-      dot.className =
-        "dot" +
-        (index === 0 ? " active" : "");
+        <div class="quote">
+          আমি সমস্যাটা এড়িয়ে যেতে চাই না।
+          আমি তোমার হৃদয় হয়ে তোমার কাছেই থাকতে চাই—
+          নিজের ভুল বুঝে, বদলে এবং সম্পর্কটাকে আরও শক্ত করে।
+        </div>
+      </div>
 
-      progressDots.appendChild(dot);
-    });
+      <div class="buttons">
+        <button class="primary" id="talkBtn">
+          আমার সঙ্গে একটু কথা বলবে? ❤️
+        </button>
 
-    const dots =
-      [...document.querySelectorAll(".dot")];
+        <button class="soft" id="timeBtn">
+          আমার একটু সময় দরকার
+        </button>
+      </div>
 
-    /*
-      একটি page থেকে অন্য page-এ যাওয়ার function
-    */
+      <div class="reply" id="reply"></div>
 
-    function showPage(index) {
-      if (
-        index < 0 ||
-        index >= pages.length ||
-        index === currentPage
-      ) {
-        return;
+      <div class="signature">
+        অনেক ভালোবাসা আর সত্যি অনুতাপ নিয়ে—<br>
+        <b>তোমার হৃদয় ❤️</b>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<button class="back" id="backBtn" aria-label="আগের পাতা">←</button>
+<div class="dots" id="dots"></div>
+<button class="music" id="musicBtn" aria-label="গান চালু বা বন্ধ">♫</button>
+
+<script>
+const pages=[...document.querySelectorAll(".page")];
+const nextBtns=document.querySelectorAll(".next");
+const backBtn=document.getElementById("backBtn");
+const musicBtn=document.getElementById("musicBtn");
+const song=document.getElementById("song");
+const hearts=document.getElementById("hearts");
+const dotsBox=document.getElementById("dots");
+const reply=document.getElementById("reply");
+
+let current=0;
+let playing=false;
+
+/* Page dots */
+pages.forEach((_,i)=>{
+  const dot=document.createElement("span");
+  dot.className="dot"+(i===0?" active":"");
+  dotsBox.appendChild(dot);
+});
+
+const dots=[...document.querySelectorAll(".dot")];
+
+/* Page change */
+function showPage(index){
+  if(index<0 || index>=pages.length || index===current)return;
+
+  pages[current].classList.remove("active");
+  pages[index].classList.add("active");
+  current=index;
+
+  dots.forEach((dot,i)=>dot.classList.toggle("active",i===current));
+  backBtn.style.display=current>0?"block":"none";
+  burst(10);
+}
+
+/* First click starts music, then it loops continuously */
+nextBtns.forEach(btn=>{
+  btn.addEventListener("click",async()=>{
+    if(current===0 && !playing){
+      try{
+        song.volume=.35;
+        await song.play();
+        playing=true;
+        musicBtn.textContent="❚❚";
+      }catch(error){
+        console.log("Music could not start:",error);
       }
-
-      const oldPage =
-        pages[currentPage];
-
-      const newPage =
-        pages[index];
-
-      const movingForward =
-        index > currentPage;
-
-      if (movingForward) {
-        oldPage.classList.add("exit-left");
-      }
-
-      oldPage.classList.remove("active");
-
-      if (movingForward) {
-        newPage.style.transform =
-          "translateX(38px) scale(0.97)";
-      } else {
-        newPage.style.transform =
-          "translateX(-38px) scale(0.97)";
-      }
-
-      requestAnimationFrame(() => {
-        newPage.classList.add("active");
-        newPage.style.transform = "";
-      });
-
-      setTimeout(() => {
-        oldPage.classList.remove("exit-left");
-      }, 520);
-
-      currentPage = index;
-
-      dots.forEach((dot, dotIndex) => {
-        dot.classList.toggle(
-          "active",
-          dotIndex === currentPage
-        );
-      });
-
-      if (currentPage > 0) {
-        backBtn.style.display = "inline-flex";
-      } else {
-        backBtn.style.display = "none";
-      }
-
-      burst(10);
     }
 
-    /*
-      Next buttons
-    */
+    showPage(current+1);
+  });
+});
 
-    nextButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        showPage(currentPage + 1);
-      });
-    });
+backBtn.addEventListener("click",()=>showPage(current-1));
 
-    /*
-      Back button
-    */
+/* Music pause/play */
+musicBtn.addEventListener("click",async()=>{
+  try{
+    if(playing){
+      song.pause();
+      playing=false;
+      musicBtn.textContent="♫";
+    }else{
+      song.volume=.35;
+      await song.play();
+      playing=true;
+      musicBtn.textContent="❚❚";
+    }
+  }catch(error){
+    alert('“our-song.mp3” ফাইলটি index.html-এর একই folder-এ রাখো।');
+  }
+});
 
-    backBtn.addEventListener("click", () => {
-      showPage(currentPage - 1);
-    });
+/* Floating hearts */
+function createHeart(){
+  const heart=document.createElement("span");
+  const symbols=["❤","♡","♥"];
 
-    /*
-      একটি floating heart তৈরি করা
-    */
+  heart.className="heart";
+  heart.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=14+Math.random()*18+"px";
+  heart.style.animationDuration=6+Math.random()*6+"s";
+  heart.style.color=Math.random()>.5?"#e94f7c":"#ff91ae";
 
-    function createHeart() {
-      const heart =
-        document.createElement("span");
+  hearts.appendChild(heart);
+  setTimeout(()=>heart.remove(),12500);
+}
 
-      const symbols = [
-        "❤",
-        "♡",
-        "♥"
-      ];
+setInterval(createHeart,750);
 
-      heart.className = "heart";
+for(let i=0;i<7;i++){
+  setTimeout(createHeart,i*180);
+}
 
-      heart.textContent =
-        symbols[
-          Math.floor(
-            Math.random() * symbols.length
-          )
-        ];
+/* Heart burst */
+function burst(count=28){
+  for(let i=0;i<count;i++){
+    setTimeout(()=>{
+      const heart=document.createElement("span");
 
-      heart.style.left =
-        Math.random() * 100 + "vw";
-
-      heart.style.fontSize =
-        14 + Math.random() * 18 + "px";
-
-      heart.style.animationDuration =
-        6 + Math.random() * 6 + "s";
-
-      heart.style.color =
-        Math.random() > 0.5
-          ? "#e94f7c"
-          : "#ff9ab5";
+      heart.className="heart";
+      heart.textContent="❤";
+      heart.style.left=44+Math.random()*12+"vw";
+      heart.style.bottom="22vh";
+      heart.style.fontSize=14+Math.random()*22+"px";
+      heart.style.animationDuration=3+Math.random()*3+"s";
+      heart.style.color="#e94f7c";
 
       hearts.appendChild(heart);
+      setTimeout(()=>heart.remove(),6500);
+    },i*40);
+  }
+}
 
-      setTimeout(() => {
-        heart.remove();
-      }, 12500);
-    }
+/* Final buttons */
+document.getElementById("talkBtn").addEventListener("click",()=>{
+  reply.innerHTML=
+    "ধন্যবাদ, ফুচু ❤️<br>"+
+    "আমি নিজের কথা বোঝানোর আগে তোমার সব কথা মন দিয়ে শুনব।";
 
-    /*
-      নিয়মিত floating hearts
-    */
+  burst();
+});
 
-    setInterval(createHeart, 780);
-
-    for (let i = 0; i < 7; i++) {
-      setTimeout(
-        createHeart,
-        i * 190
-      );
-    }
-
-    /*
-      Button চাপলে অনেক heart বের হবে
-    */
-
-    function burst(count = 28) {
-      for (let i = 0; i < count; i++) {
-        setTimeout(() => {
-          const heart =
-            document.createElement("span");
-
-          heart.className = "heart";
-          heart.textContent = "❤";
-
-          heart.style.left =
-            44 + Math.random() * 12 + "vw";
-
-          heart.style.bottom = "22vh";
-
-          heart.style.fontSize =
-            14 + Math.random() * 22 + "px";
-
-          heart.style.animationDuration =
-            3 + Math.random() * 3 + "s";
-
-          heart.style.color = "#e94f7c";
-
-          hearts.appendChild(heart);
-
-          setTimeout(() => {
-            heart.remove();
-          }, 6500);
-
-        }, i * 42);
-      }
-    }
-
-    /*
-      Music button
-    */
-
-    musicBtn.addEventListener(
-      "click",
-      async () => {
-        try {
-          if (!playing) {
-            await song.play();
-
-            musicBtn.textContent = "❚❚";
-
-            playing = true;
-          } else {
-            song.pause();
-
-            musicBtn.textContent = "♫";
-
-            playing = false;
-          }
-        } catch (error) {
-          reply.textContent =
-            "গান চালাতে folder-এর মধ্যে “our-song.mp3” নামে তোমাদের special গানটি রাখো।";
-        }
-      }
-    );
-
-    /*
-      শেষের প্রথম button
-    */
-
-    document
-      .getElementById("talkBtn")
-      .addEventListener("click", () => {
-        reply.innerHTML =
-          "ধন্যবাদ, ফুচু ❤️<br>" +
-          "আমি এবার শুধু বলব না—মন দিয়ে তোমার সব কথা শুনব।";
-
-        burst();
-      });
-
-    /*
-      সময় দরকার button
-    */
-
-    document
-      .getElementById("timeBtn")
-      .addEventListener("click", () => {
-        reply.innerHTML =
-          "ঠিক আছে, ফুচু। তোমার যতটা সময় দরকার, নাও।<br>" +
-          "আমি তোমার অনুভূতি আর সিদ্ধান্তকে সম্মান করছি। 🤍";
-      });
-  </script>
+document.getElementById("timeBtn").addEventListener("click",()=>{
+  reply.innerHTML=
+    "ঠিক আছে, ফুচু। তোমার যতটা সময় দরকার, নাও।<br>"+
+    "আমি চাপ দেব না—তোমার হৃদয় এখানেই আছে, "+
+    "তোমার সঙ্গে কথা বলে সবকিছু ঠিক করার জন্য। 🤍";
+});
+</script>
 
 </body>
 </html>
